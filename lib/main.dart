@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:platform_api/mainLayout.dart';
+import 'package:platform_api/main_layout.dart';
 import 'l10n/app_localizations.dart'; // generated .dart file
 
 void main() {
@@ -24,9 +24,7 @@ class _FlutterApiClientAppState extends State<FlutterApiClientApp> {
 
   void _toggleTheme() {
     setState(() {
-      _themeMode = _themeMode == ThemeMode.light
-          ? ThemeMode.dark
-          : ThemeMode.light;
+      _themeMode = _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     });
   }
 
@@ -43,10 +41,7 @@ class _FlutterApiClientAppState extends State<FlutterApiClientApp> {
       darkTheme: ThemeData(
         brightness: Brightness.dark,
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
-          brightness: Brightness.dark,
-        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple, brightness: Brightness.dark),
       ),
       locale: _locale,
       supportedLocales: AppLocalizations.supportedLocales,

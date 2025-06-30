@@ -9,11 +9,7 @@ class MainLayout extends StatelessWidget {
   final void Function(Locale) onLocaleChange;
   final VoidCallback onThemeToggle;
 
-  const MainLayout({
-    super.key,
-    required this.onLocaleChange,
-    required this.onThemeToggle,
-  });
+  const MainLayout({super.key, required this.onLocaleChange, required this.onThemeToggle});
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +18,7 @@ class MainLayout extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          HeaderBar(
-            loc: loc,
-            onLocaleChange: onLocaleChange,
-            onThemeToggle: onThemeToggle,
-          ),
+          HeaderBar(loc: loc, onLocaleChange: onLocaleChange, onThemeToggle: onThemeToggle),
           Expanded(
             child: Row(
               children: const [

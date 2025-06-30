@@ -6,12 +6,7 @@ class HeaderBar extends StatelessWidget {
   final void Function(Locale) onLocaleChange;
   final VoidCallback onThemeToggle;
 
-  const HeaderBar({
-    super.key,
-    required this.loc,
-    required this.onLocaleChange,
-    required this.onThemeToggle,
-  });
+  const HeaderBar({super.key, required this.loc, required this.onLocaleChange, required this.onThemeToggle});
 
   @override
   Widget build(BuildContext context) {
@@ -29,18 +24,11 @@ class HeaderBar extends StatelessWidget {
                 icon: const Icon(Icons.language),
                 onSelected: onLocaleChange,
                 itemBuilder: (_) => [
-                  const PopupMenuItem(
-                    value: Locale('en'),
-                    child: Text('English'),
-                  ),
+                  const PopupMenuItem(value: Locale('en'), child: Text('English')),
                   const PopupMenuItem(value: Locale('zh'), child: Text('中文')),
                 ],
               ),
-              IconButton(
-                icon: const Icon(Icons.brightness_6),
-                tooltip: loc.switch_theme,
-                onPressed: onThemeToggle,
-              ),
+              IconButton(icon: const Icon(Icons.brightness_6), tooltip: loc.switch_theme, onPressed: onThemeToggle),
             ],
           ),
         ],
