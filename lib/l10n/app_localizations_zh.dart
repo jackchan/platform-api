@@ -17,7 +17,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
 /// The translations for Chinese, as used in Hong Kong (`zh_HK`).
 class AppLocalizationsZhHk extends AppLocalizationsZh {
-  AppLocalizationsZhHk(): super('zh_HK');
+  AppLocalizationsZhHk() : super('zh_HK');
 
   @override
   String get title => '你好';
