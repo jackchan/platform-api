@@ -9,19 +9,11 @@ class AppLocalizationsZh extends AppLocalizations {
   AppLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
-  String get title => '你好';
+  String get title => '我的應用程式';
 
   @override
-  String get switch_language => '转语言';
-}
-
-/// The translations for Chinese, as used in Hong Kong (`zh_HK`).
-class AppLocalizationsZhHk extends AppLocalizationsZh {
-  AppLocalizationsZhHk() : super('zh_HK');
+  String get switch_language => '切換語言';
 
   @override
-  String get title => '你好';
-
-  @override
-  String get switch_language => '昊屘';
+  String get switch_theme => '切換主題';
 }

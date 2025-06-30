@@ -1,5 +1,6 @@
 {
   "@@locale": "en",
-  "title": "Hello World",
-  "switch_language": "Switch Language"
+  "title": "My App",
+  "switch_language": "Switch language",
+  "switch_theme": "Switch theme"
 }

@@ -9,8 +9,11 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get title => 'Hello World';
+  String get title => 'My App';
 
   @override
-  String get switch_language => 'Switch Language';
+  String get switch_language => 'Switch language';
+
+  @override
+  String get switch_theme => 'Switch theme';
 }
