@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+typedef ResponseCallback = void Function({String? response, bool? loading});
+
 class RequestEditor extends StatefulWidget {
-  const RequestEditor({super.key});
+  final ResponseCallback onResponseChanged;
+
+  const RequestEditor({Key? key, required this.onResponseChanged}) : super(key: key);
 
   @override
   State<RequestEditor> createState() => _RequestEditorState();
@@ -30,31 +34,23 @@ class _RequestEditorState extends State<RequestEditor> {
   Future<void> _sendRequest() async {
     final urlText = _urlController.text.trim();
     if (urlText.isEmpty) {
-      setState(() {
-        _responseText = 'Please enter a valid URL.';
-      });
+      _updateResponse('Please enter a valid URL.', false);
       return;
     }
 
-    Uri? uri;
+    Uri uri;
     try {
       uri = Uri.parse(urlText);
-    } catch (e) {
-      setState(() {
-        _responseText = 'Invalid URL format.';
-      });
+    } catch (_) {
+      _updateResponse('Invalid URL format.', false);
       return;
     }
 
-    setState(() {
-      _isLoading = true;
-      _responseText = null;
-    });
+    _updateResponse(null, true);
 
     try {
-      http.Response response;
-
-      final headers = <String, String>{'Content-Type': 'application/json'};
+      final headers = {'Content-Type': 'application/json'};
+      late final http.Response response;
 
       switch (_selectedMethod) {
         case 'GET':
@@ -76,18 +72,23 @@ class _RequestEditorState extends State<RequestEditor> {
           throw UnsupportedError('Method $_selectedMethod not supported');
       }
 
-      setState(() {
-        _responseText = 'Status: ${response.statusCode}\n\nHeaders:\n${response.headers}\n\nBody:\n${response.body}';
-      });
+      _updateResponse(
+        'Status: ${response.statusCode}\n\n'
+        'Headers:\n${response.headers}\n\n'
+        'Body:\n${response.body}',
+        false,
+      );
     } catch (e) {
-      setState(() {
-        _responseText = 'Error sending request:\n$e';
-      });
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      _updateResponse('Error sending request:\n$e', false);
     }
+  }
+
+  void _updateResponse(String? text, bool loading) {
+    setState(() {
+      _responseText = text;
+      _isLoading = loading;
+    });
+    widget.onResponseChanged(response: text, loading: loading);
   }
 
   @override
@@ -98,29 +99,21 @@ class _RequestEditorState extends State<RequestEditor> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Row with Method dropdown and URL input
+          // Method + URL row
           Row(
             children: [
-              // HTTP Method dropdown
               DropdownButton<String>(
                 value: _selectedMethod,
                 onChanged: (value) {
-                  if (value != null) {
-                    setState(() {
-                      _selectedMethod = value;
-                      // Clear body if method doesn't allow body
-                      if (!_isBodyAllowed) {
-                        _bodyController.clear();
-                      }
-                    });
-                  }
+                  if (value == null) return;
+                  setState(() {
+                    _selectedMethod = value;
+                    if (!_isBodyAllowed) _bodyController.clear();
+                  });
                 },
-                items: _methods.map((method) => DropdownMenuItem(value: method, child: Text(method))).toList(),
+                items: _methods.map((m) => DropdownMenuItem(value: m, child: Text(m))).toList(),
               ),
-
               const SizedBox(width: 12),
-
-              // Expanded URL input
               Expanded(
                 child: TextField(
                   controller: _urlController,
@@ -132,10 +125,7 @@ class _RequestEditorState extends State<RequestEditor> {
                   keyboardType: TextInputType.url,
                 ),
               ),
-
               const SizedBox(width: 12),
-
-              // Send button
               ElevatedButton(
                 onPressed: _isLoading ? null : _sendRequest,
                 child: _isLoading
@@ -147,7 +137,7 @@ class _RequestEditorState extends State<RequestEditor> {
 
           const SizedBox(height: 16),
 
-          // Body input (only enabled for methods that allow body)
+          // Body input
           TextField(
             controller: _bodyController,
             enabled: _isBodyAllowed,
@@ -158,27 +148,6 @@ class _RequestEditorState extends State<RequestEditor> {
               hintText: _isBodyAllowed
                   ? 'Enter request payload here (JSON, text, etc.)'
                   : 'Request body not allowed for $_selectedMethod',
-            ),
-          ),
-
-          const SizedBox(height: 16),
-
-          // Response display
-          Expanded(
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(6),
-                color: Theme.of(context).colorScheme.background,
-              ),
-              child: SingleChildScrollView(
-                child: Text(
-                  _responseText ?? 'Response will appear here',
-                  style: const TextStyle(fontFamily: 'monospace'),
-                ),
-              ),
             ),
           ),
         ],

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+final String appVersion = dotenv.env['APP_VERSION'] ?? '';
 
 class FooterBar extends StatelessWidget {
   const FooterBar({super.key});
@@ -13,7 +16,7 @@ class FooterBar extends StatelessWidget {
         children: [
           Text('Status: Ready', style: Theme.of(context).textTheme.labelSmall),
           const Spacer(),
-          Text('v0.1.0', style: Theme.of(context).textTheme.labelSmall),
+          Text('v$appVersion', style: Theme.of(context).textTheme.labelSmall),
         ],
       ),
     );

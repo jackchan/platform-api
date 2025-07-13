@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:platform_api/main_layout.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'l10n/app_localizations.dart'; // generated .dart file
 
-void main() {
+Future<void> main() async {
+  await dotenv.load();
   runApp(const FlutterApiClientApp());
 }
 
